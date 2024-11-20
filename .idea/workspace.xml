@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5b7c08c5-58c7-49c7-b6bf-49fc59a89fd7" name="Changes" comment=".">
-      <change beforePath="$PROJECT_DIR$/../../코드/kakao-test/hobiday-kakao/src/test/java/com/example/hobiday_backend/HobidayBackendApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../코드/kakao-test/hobiday-kakao/src/test/java/com/example/hobiday_backend/HobidayBackendApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../코드/kakao-test/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../코드/kakao-test/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../코드/kakao-test/hobiday-kakao/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../코드/kakao-test/hobiday-kakao/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +98,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732087418684</updated>
-      <workItem from="1732087419822" duration="596000" />
+      <workItem from="1732087419822" duration="1287000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <option name="closed" value="true" />
@@ -123,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732087973021</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary=".">
+      <option name="closed" value="true" />
+      <created>1732088204457</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732088204457</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
