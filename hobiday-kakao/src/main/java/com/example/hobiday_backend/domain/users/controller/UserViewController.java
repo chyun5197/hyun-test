@@ -23,7 +23,7 @@ public class UserViewController {
 
     // 프로필 정보 입력한 후 홈화면으로 이동
     @GetMapping("/home-home")
-    public String home(Model model){
+    public String home(){
         return "home";
     }
 

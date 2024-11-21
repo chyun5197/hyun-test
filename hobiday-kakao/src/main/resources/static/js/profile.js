@@ -8,13 +8,13 @@ if (createButton){
         });
         function success(){
             alert('등록 완료되었습니다.');
-            location.replace("/home");
+            location.replace("/home2");
         }
         function fail(){
             alert('등록 실패했습니다.');
-            location.replace("/home");
+            location.replace("/home2");
         }
-        httpRequest("POST", "/api/profile/join", body, success, fail);
+        httpRequest("POST", "/api/profile", body, success, fail);
     })
 }
 
