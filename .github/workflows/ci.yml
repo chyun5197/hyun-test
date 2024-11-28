@@ -1,74 +1,45 @@
-# Workflow 이름
-name: Spring Boot & Gradle CI/CD
+ame: Java CI with Gradle
 
-on: # 어떤 이벤트가 발생하면 workflow 실행할 지 명시
-  # master 브랜치에 push나 pull request 발생 시
+# 동작 조건 설정 : main 브랜치에 push 혹은 pull request가 발생할 경우 동작한다.
+on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
-# 위 이벤트 발생 시 실행될 작업들
+permissions:
+  contents: read
+
 jobs:
-  build:
-    # VM의실행 환경 지정 => 우분투 최신 버전
+  # Spring Boot 애플리케이션을 빌드하여 도커허브에 푸시하는 과정
+  build-docker-image:
     runs-on: ubuntu-latest
-
-    # 실행될 jobs를 순서대로 명시
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # JDK 17 설치
+      - uses: actions/checkout@v3
+      # 1. Java 17 세팅
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Gradle Build를 위한 권한 부여
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      # Gradle Build (test 제외)
+      # 2. Spring Boot 애플리케이션 빌드
       - name: Build with Gradle
-        run: |
-          chmod +x ./gradlew
-          ./gradlew clean build -x test
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+            arguments: clean bootJar
 
-      # DockerHub 로그인
-      - name: DockerHub Login
+      # 3. Docker 이미지 빌드
+      - name: docker image build
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+
+      # 4. DockerHub 로그인
+      - name: docker login
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # Docker 이미지 빌드
-      - name: Docker Image Build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
-
-      # DockerHub Push
-      - name: DockerHub Push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-
-      # EC2 인스턴스 접속 및 애플리케이션 실행
-      - name: Application Run
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-
-          script: |
-            sudo docker kill ${{ secrets.PROJECT_NAME }}
-            sudo docker rm -f ${{ secrets.PROJECT_NAME }}
-            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
-            docker-compose up -d
-            docker image prune -f
-#            sudo docker run -p ${{ secrets.PORT }}:${{ secrets.PORT }} \
-#            --name ${{ secrets.PROJECT_NAME }} \
-#            -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
-#            -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
-#            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
-#            -d ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }}
+      # 5. Docker Hub 이미지 푸시
+      - name: docker Hub push
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
