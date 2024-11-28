@@ -54,6 +54,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
+            sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{secrets.DOCKER_USERNAME}}/hyun:latest
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hyun:latest
