@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,7 +46,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/docker-test:latest
+            sudo docker pull ${{secrets.DOCKER_USERNAME}}/docker-test:latest
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/docker-test:latest
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
