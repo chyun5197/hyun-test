@@ -41,10 +41,10 @@ jobs:
       # Docker build & Push
 #          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/hyun .
+        run: docker build -t chyun257634/hyun .
 
       - name: Push to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/hyun
+        run: docker push chyun257634/hyun
 
       # EC2 배포
       - name: Docker image pull & Deploy to EC2
