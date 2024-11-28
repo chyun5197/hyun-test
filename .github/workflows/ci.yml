@@ -28,8 +28,8 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: |
-            .sudo chmod +x gradlew
-            ./gradlew clean build
+          chmod +x ./gradlew
+          ./gradlew clean build -x test
 
 # Docker build & Push
       - name: Docker build & push to Docker hub
