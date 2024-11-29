@@ -1,4 +1,4 @@
-name: CI/CD using github actions & docker
+name: Hobiday CI/CD using Github Actions & Docker
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       packages: write
 
     steps:
-      - name: Git checkout
+      - name: Git Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-      - name: Build with Gradle Wrapper
+      - name: Build with Gradle
         run: |
           chmod +x ./gradlew
           ./gradlew clean build -x test
@@ -38,25 +38,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      # Docker build & Push 3
+      # Docker Build & Push
       - name: Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/hyun .
 
-      - name: Push to Docker Hub
+      - name: Push to DockerHub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/hyun
 
       # EC2 배포
-      - name: Docker image pull & Deploy to EC2
+      - name: Docker Image Pull & Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
+          host: ${{ secrets.EC2_HOST }} # EC2 Public DNS
           username: ubuntu
-          key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
-          # 도커 작업
+          key: ${{ secrets.EC2_PRIVATE_KEY }} # pem key
           script: |
             sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{secrets.DOCKER_USERNAME}}/hyun:latest
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hyun:latest
-            sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
-            sudo docker image prune -a -f
+            sudo docker-compose up -d
+            sudo docker image prune -f
+#            sudo docker stop $(sudo docker ps -a -q)
+#            sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/hyun:latest
+#            sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
+#            sudo docker image prune -a -f
