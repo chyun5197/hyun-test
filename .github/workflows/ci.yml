@@ -35,7 +35,7 @@ jobs:
         with:
           name: application.yml
           path: ./src/main/resources/application.yml
-          retention-days:
+
 
       # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
       - name: Setup Gradle
