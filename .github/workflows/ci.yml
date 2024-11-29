@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # Setting application.yml
+      # Setting application.ymlㅁ
       - name: Git Checkout
         uses: actions/checkout@v4
 
